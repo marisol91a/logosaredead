@@ -1,0 +1,11 @@
+/* VARIABLES */
+/* Variables CSS (colores, espaciados, etc.) para facilitar mantenimiento. */
+
+:root {
+    --black-color: #0E0E0E;
+    --pearl-color: #FFFDF8;
+    --hero-font: "Respira Black", sans-serif;
+    --primary-font: "Times New Roman", Times, serif;
+    --secondary-font: "Anton", sans-serif;
+    --font-size-base: 1rem;
+}

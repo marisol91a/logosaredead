@@ -658,4 +658,30 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // Copy URL Button
+  const copyUrlButton = document.querySelector(".copy-url");
+  if (copyUrlButton) {
+    copyUrlButton.addEventListener("click", () => {
+      const currentUrl = window.location.href;
+      navigator.clipboard.writeText(currentUrl);
+      // .then(() => {
+      //   alert("URL copied to clipboard! Now spread the news.");
+      // })
+      // .catch((err) => {
+      //   console.error("Failed to copy URL: ", err);
+      // });
+    });
+
+    // change button text to "Copied!" on click
+    copyUrlButton.addEventListener("click", () => {
+      const span = copyUrlButton.querySelector("span");
+      if (span) {
+        span.textContent = "Link copied! Now spread the news";
+        setTimeout(() => {
+          span.textContent = "Share with them the news";
+        }, 2000);
+      }
+    });
+  }
 });

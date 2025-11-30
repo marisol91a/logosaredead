@@ -1,5 +1,9 @@
 /* GLOBAL */
 /* Estilos comunes como botones, formularios y grid. */
+html {
+  scroll-behavior: smooth;
+}
+
 
 body {
     font-family: "Times New Roman", Times, serif;
@@ -853,7 +857,7 @@ input[type=text] {
 }
 
 .third-circle {
-    top: 70%;
+    top: 65%;
 
     .diagram-title {
         font-size: 2rem;
@@ -1170,7 +1174,7 @@ input[type=text] {
     }
 
     .hero {
-        height: 65vh;
+        height: auto;
         justify-content: space-between;
     }
 
@@ -1225,7 +1229,7 @@ input[type=text] {
         }
         /*block-wrapper child 1 padding 48px 0*/
         .block-wrapper:first-child {
-            width: 30%
+            width: 35%
         }
 
         .quote-text {

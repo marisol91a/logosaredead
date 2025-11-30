@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initializeAnimation() {
     const heroTitle = document.querySelector(".hero-title");
-    if (!heroTitle) return;
+    const heroContainer = document.querySelector(".hero");
+    if (!heroTitle || !heroContainer) return;
 
     const originalHTML = heroTitle.innerHTML;
     const lines = originalHTML.split("<br>");
@@ -61,8 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     gsap.set(spanElements, { y: 0, opacity: 1 });
 
-    // Calcular la distancia para que caiga exactamente a 50vh desde el inicio de la pantalla
+    // Calcular la distancia máxima que pueden caer (hasta el final del hero)
     const heroRect = heroTitle.getBoundingClientRect();
+    const heroContainerRect = heroContainer.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
 
     // Ajustar la posición objetivo según el tamaño de pantalla
@@ -73,7 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
       targetPosition = viewportHeight * 0.5; // 50vh para tablet y desktop
     }
 
-    const maxFallDistance = targetPosition - heroRect.top;
+    // Limitar la caída al contenedor hero
+    const maxPossibleDistance = targetPosition - heroRect.top;
+    const heroBottomLimit = heroContainerRect.bottom - heroRect.top;
+    const maxFallDistance = Math.min(maxPossibleDistance, heroBottomLimit);
 
     let hasStarted = false;
 

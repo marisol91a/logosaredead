@@ -768,7 +768,7 @@ input[type=text] {
     left: 50%;
     top: 0;
     transform-origin: top center;
-    transform: translateX(-50%) scale(1.25);
+    transform: translateX(-50%) scale(2.75);
 }
 
 .diagram-info-wrapper {
@@ -778,6 +778,9 @@ input[type=text] {
     flex-direction: column;
     align-items: center;
     inset: 0%;
+    z-index: 2;
+    mix-blend-mode: difference;
+
     /* display: none; */
 }
 
@@ -800,7 +803,6 @@ input[type=text] {
     flex-direction: column;
     row-gap: 60px;
 }
-
 
 #circle-1 {
     z-index: 23;
@@ -825,6 +827,13 @@ input[type=text] {
 #circle-2:hover,
 #circle-3:hover {
     fill: #FFFDF8;
+}
+
+.hover-span {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .first-circle {
@@ -862,6 +871,37 @@ input[type=text] {
     a {
         text-decoration: none;
     }
+}
+
+.diagram-description-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    margin: 36px;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--pearl-color);
+    border-radius: 18px;
+    color: var(--black-color);
+    width: 300px;
+    height: 220px;
+    z-index: 100;
+	pointer-events: none;
+    visibility: hidden;
+}
+
+.diagram-description-wrapper.active {
+    visibility: visible;
+}
+
+.diagram-description-item {
+    border: 1px solid var(--black-color);
+    border-radius: 12px;
+    padding: 24px;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.3s ease;
 }
 
 /* ADVICE SECTION */
@@ -966,6 +1006,50 @@ input[type=text] {
     opacity: 0;
  }
 
+ .fugitiva-website-wrapper {
+    a {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    a::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0;
+        height: 6px;
+        background-color: var(--black-color);
+        transition: width 0.3s ease;
+    }
+
+    a:hover::after {
+        width: 100%;
+    }
+ }
+
+ .credits-text {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0;
+        height: 6px;
+        background-color: var(--black-color);
+        transition: width 0.3s ease;
+    }
+
+     &:hover::after {
+        width: 100%;
+    }
+ }
+
 
 /* MEDIA QUERIES 768px */
 @media (min-width: 768px) {
@@ -1028,6 +1112,10 @@ input[type=text] {
 
     .logo-area {
         height: 500px;
+    }
+
+    .diagram-svg-wrapper {
+        transform: translateX(-50%) scale(1.25);
     }
 
     /* Footer */

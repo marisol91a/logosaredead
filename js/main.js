@@ -597,4 +597,65 @@ document.addEventListener("DOMContentLoaded", () => {
       contents[index].classList.toggle("content-hidden");
     });
   });
+
+  // diagram description wrappers
+  const hoverSpans = document.querySelectorAll(".hover-span");
+  const descriptionWrappers = document.querySelectorAll(
+    ".diagram-description-wrapper"
+  );
+
+  console.log("Hover spans encontrados:", hoverSpans.length);
+  console.log("Description wrappers encontrados:", descriptionWrappers.length);
+
+  if (hoverSpans.length > 0 && descriptionWrappers.length > 0) {
+    hoverSpans.forEach((span, index) => {
+      const relatedWrapper = descriptionWrappers[index];
+
+      if (relatedWrapper) {
+        const descriptionItem = relatedWrapper.querySelector(
+          ".diagram-description-item"
+        );
+
+        console.log(`Configurando hover para círculo ${index + 1}`);
+
+        // Configurar estado inicial
+        gsap.set(descriptionItem, { opacity: 0, scale: 0.9 });
+
+        // Eventos de hover
+        span.addEventListener("mouseenter", () => {
+          console.log(`Hover en círculo ${index + 1}`);
+
+          // Ocultar todos los wrappers primero
+          descriptionWrappers.forEach((w) => w.classList.remove("active"));
+
+          // Mostrar solo el wrapper relacionado
+          relatedWrapper.classList.add("active");
+
+          // Animar el item
+          gsap.to(descriptionItem, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.15,
+            ease: "power2.out",
+          });
+        });
+
+        span.addEventListener("mouseleave", () => {
+          console.log(`Mouseleave en círculo ${index + 1}`);
+
+          // Animar el item a oculto
+          gsap.to(descriptionItem, {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.15,
+            ease: "power2.in",
+            onComplete: () => {
+              // Ocultar el wrapper después de la animación
+              relatedWrapper.classList.remove("active");
+            },
+          });
+        });
+      }
+    });
+  }
 });

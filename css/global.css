@@ -2,6 +2,7 @@
 /* Estilos comunes como botones, formularios y grid. */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 
@@ -170,12 +171,9 @@ medium-text {
     font-size: 68px;
     letter-spacing: -0.2rem;
     text-align: center;
-    color: var(--black-color);
-    font-family: var(--hero-font);
-    /* text-transform: uppercase; */
-    line-height: 0.9;
-    overflow: visible;
     color: red;
+    font-family: var(--hero-font);
+    line-height: 0.9;
 }
 
 .columns-container {

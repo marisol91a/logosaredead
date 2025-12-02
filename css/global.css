@@ -261,7 +261,7 @@ medium-text {
 }
 
 .image-filter[data-filter="noise-1"] {
-    width: 120%;
+    width: 100%;
     filter: url(#noise-1);
     transform: scale(1.05);
 }
@@ -772,7 +772,7 @@ input[type=text] {
     left: 50%;
     top: 0;
     transform-origin: top center;
-    transform: translateX(-50%) scale(2.75);
+    transform: translateX(-50%) scale(2.2);
 }
 
 .diagram-info-wrapper {
@@ -849,7 +849,7 @@ input[type=text] {
 }
 
 .second-circle {
-    top: 33%;
+    top: 25%;
 
     .diagram-title {
         font-size: 1.5rem;
@@ -857,7 +857,7 @@ input[type=text] {
 }
 
 .third-circle {
-    top: 65%;
+    top: 60%;
 
     .diagram-title {
         font-size: 2rem;
@@ -881,14 +881,15 @@ input[type=text] {
     position: absolute;
     inset: 0;
     display: flex;
-    margin: 36px;
+    margin: 12px;
     padding: 8px;
     justify-content: center;
     align-items: center;
     background-color: var(--pearl-color);
     border-radius: 18px;
     color: var(--black-color);
-    width: 300px;
+    width: calc(100% - 24px);
+    max-width: 300px;
     height: 220px;
     z-index: 100;
 	pointer-events: none;
@@ -1122,6 +1123,13 @@ input[type=text] {
         transform: translateX(-50%) scale(1.25);
     }
 
+    .second-circle {
+        top: 33%;
+    }
+
+    .third-circle {
+        top: 65%;
+    }
     /* Footer */
     .credits-info-visible {
         display: grid;

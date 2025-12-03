@@ -94,10 +94,6 @@ body {
     }
 }
 
-.image-hover:hover {
-    background-image: url(../img/webp/logo-overdose2.webp);
-}
-
 /*IMAGE FILTERS*/
 .distort {
     position: absolute;

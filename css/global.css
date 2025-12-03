@@ -731,7 +731,7 @@ input[type=text] {
 .diagram-info{
     display: flex;
     flex-direction: column;
-    row-gap: 24px;
+    row-gap: 12px;
 }
 
 #circle-1 {

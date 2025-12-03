@@ -288,6 +288,12 @@ body {
     font-family: var(--hero-font);
     line-height: 0.9;
     z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hero-title.loaded {
+    opacity: 1;
 }
 
 .columns-container {

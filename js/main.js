@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //HERO SECTION
   // Mostrar hero-title cuando las fuentes estén cargadas e inicializar animación
   let fontLoadingHandled = false;
-  
+
   // Timeout de 800ms para mostrar el título si las fuentes tardan mucho
   setTimeout(() => {
     if (!fontLoadingHandled) {

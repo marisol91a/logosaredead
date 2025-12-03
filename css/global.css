@@ -783,7 +783,7 @@ input[type=text] {
 }
 
 .third-circle {
-    top: 50%;
+    top: 45%;
 
     .diagram-title {
         font-size: 2rem;
@@ -805,7 +805,8 @@ input[type=text] {
 
 .diagram-description-wrapper {
     position: absolute;
-    inset: 0;
+    top: calc(100% - 310px);
+    left: 0;
     display: flex;
     margin: 12px;
     padding: 8px;
@@ -1047,6 +1048,11 @@ input[type=text] {
 
     .diagram-svg-wrapper {
         transform: translateX(-50%) scale(1.25);
+    }
+
+    .diagram-description-wrapper {
+    position: absolute;
+    inset: 0;
     }
 
     .second-circle {

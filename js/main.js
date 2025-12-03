@@ -151,6 +151,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //HERO SECTION
+  // Mostrar hero-title cuando las fuentes estén cargadas e inicializar animación
+  document.fonts.ready.then(() => {
+    const heroTitle = document.querySelector(".hero-title");
+    if (heroTitle) {
+      heroTitle.classList.add("loaded");
+      // Inicializar animación después de cargar las fuentes
+      initializeAnimation();
+    }
+  });
+
   //Animación de caída de letras al hacer scroll
   function initializeAnimation() {
     const heroTitle = document.querySelector(".hero-title");
@@ -237,8 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", onFirstScroll, { passive: true });
     window.addEventListener("touchstart", onFirstScroll, { passive: true });
   }
-
-  initializeAnimation();
 
   //Animación Textos Banners - Scroll Triggered
   function animateTexts() {

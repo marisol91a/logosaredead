@@ -12,6 +12,7 @@ body {
     text-align: center;
     font-size: 18px;
     line-height: 1.5;
+    overflow-x: hidden;
 }
 
 .page-wrapper {
@@ -803,6 +804,8 @@ input[type=text] {
 .brand-examples-wrapper{
     display: flex;
     flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 
     a {
         text-decoration: none;

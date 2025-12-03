@@ -152,12 +152,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //HERO SECTION
   // Mostrar hero-title cuando las fuentes estén cargadas e inicializar animación
+  let fontLoadingHandled = false;
+  
+  // Timeout de 800ms para mostrar el título si las fuentes tardan mucho
+  setTimeout(() => {
+    if (!fontLoadingHandled) {
+      const heroTitle = document.querySelector(".hero-title");
+      if (heroTitle) {
+        heroTitle.classList.add("loaded");
+        initializeAnimation();
+        fontLoadingHandled = true;
+      }
+    }
+  }, 800);
+
+  // Mostrar cuando las fuentes estén listas (si es antes del timeout)
   document.fonts.ready.then(() => {
-    const heroTitle = document.querySelector(".hero-title");
-    if (heroTitle) {
-      heroTitle.classList.add("loaded");
-      // Inicializar animación después de cargar las fuentes
-      initializeAnimation();
+    if (!fontLoadingHandled) {
+      const heroTitle = document.querySelector(".hero-title");
+      if (heroTitle) {
+        heroTitle.classList.add("loaded");
+        initializeAnimation();
+        fontLoadingHandled = true;
+      }
     }
   });
 

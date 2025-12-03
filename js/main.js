@@ -2,7 +2,132 @@
 document.addEventListener("DOMContentLoaded", () => {
   gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
 
-  // Update date info with current month and year
+  //GENERALES
+  //Animación de lineas
+  function animateLines() {
+    const lines = document.querySelectorAll(".line:not(.no-animate)");
+
+    lines.forEach((line) => {
+      gsap.fromTo(
+        line,
+        {
+          x: "-100%",
+          opacity: 0,
+        },
+        {
+          x: "0%",
+          opacity: 1,
+          duration: 1,
+          ease: "linear",
+          scrollTrigger: {
+            trigger: line,
+            start: "top 85%",
+            end: "top 65%",
+            toggleActions: "play none reverse none",
+          },
+        }
+      );
+    });
+  }
+
+  animateLines();
+
+  //Animación de borders
+  function animateBorders() {
+    const outlinedElements = document.querySelectorAll(
+      ".block-wrapper.outlined"
+    );
+
+    outlinedElements.forEach((element) => {
+      // Add animated class to enable pseudo-elements
+      element.classList.add("animated");
+
+      // Create timeline for sequenced animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: element,
+          start: "top 80%",
+          end: "top 60%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Set initial state and animate pseudo-elements
+      gsap.set(element, { "--border-height": "0%" });
+
+      tl.to(element, {
+        "--border-height": "100%",
+        duration: 0.8,
+        ease: "power2.out",
+      });
+    });
+  }
+
+  animateBorders();
+
+  //IMAGENES
+  //Filtro SVG - Hover Effect
+  const imageFilters = document.querySelectorAll(".image-filter");
+  if (imageFilters.length > 0) {
+    imageFilters.forEach((imageFilter) => {
+      imageFilter.addEventListener("mouseenter", () => {
+        // Obtener el ID del filtro asignado a esta imagen
+        const filterId = imageFilter.getAttribute("data-filter");
+        if (filterId) {
+          const turbulence = document.querySelector(`#${filterId} .turbulence`);
+          if (turbulence) {
+            gsap.to(turbulence, {
+              attr: { baseFrequency: "0.01 0.08" },
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          }
+        }
+      });
+
+      imageFilter.addEventListener("mouseleave", () => {
+        // Obtener el ID del filtro asignado a esta imagen
+        const filterId = imageFilter.getAttribute("data-filter");
+        if (filterId) {
+          const turbulence = document.querySelector(`#${filterId} .turbulence`);
+          if (turbulence) {
+            gsap.to(turbulence, {
+              attr: { baseFrequency: "0 0" },
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          }
+        }
+      });
+    });
+  }
+
+  //Animación de imagenes - Scroll Triggered
+  const imgAnimation = document.querySelectorAll(
+    ".logo img, .image-wrapper, .witness-image-wrapper"
+  );
+
+  imgAnimation.forEach((img) => {
+    gsap.fromTo(
+      img,
+      { y: 20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: img,
+          start: "top 90%",
+          end: "top 70%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  });
+
+  //HEADER
+  //Actualizar la fecha mes y año en el elemento con clase .date-info
   const dateInfo = document.querySelector(".date-info");
   if (dateInfo) {
     const now = new Date();
@@ -25,6 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dateInfo.textContent = `${currentMonth}, ${currentYear}`;
   }
 
+  //HERO SECTION
+  //Animación de caída de letras al hacer scroll
   function initializeAnimation() {
     const heroTitle = document.querySelector(".hero-title");
     const heroContainer = document.querySelector(".hero");
@@ -32,7 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const originalHTML = heroTitle.innerHTML;
     const lines = originalHTML.split("<br>");
-    let newHTML = "";
 
     // Limpiar el contenido y crear spans directamente como elementos DOM
     heroTitle.innerHTML = "";
@@ -114,286 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initializeAnimation();
 
-  // Animación de lineas
-  function animateLines() {
-    const lines = document.querySelectorAll(".line:not(.no-animate)");
-
-    lines.forEach((line) => {
-      gsap.fromTo(
-        line,
-        {
-          x: "-100%",
-          opacity: 0,
-        },
-        {
-          x: "0%",
-          opacity: 1,
-          duration: 1,
-          ease: "linear",
-          scrollTrigger: {
-            trigger: line,
-            start: "top 85%",
-            end: "top 65%",
-            toggleActions: "play none reverse none",
-          },
-        }
-      );
-    });
-  }
-
-  animateLines();
-
-  // Animación de borders
-  function animateBorders() {
-    const outlinedElements = document.querySelectorAll(
-      ".block-wrapper.outlined"
-    );
-
-    outlinedElements.forEach((element) => {
-      // Add animated class to enable pseudo-elements
-      element.classList.add("animated");
-
-      // Create timeline for sequenced animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: element,
-          start: "top 80%",
-          end: "top 60%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      // Set initial state and animate pseudo-elements
-      gsap.set(element, { "--border-height": "0%" });
-
-      tl.to(element, {
-        "--border-height": "100%",
-        duration: 0.8,
-        ease: "power2.out",
-      });
-    });
-  }
-
-  animateBorders();
-
-  // Witness Cards - Show next card on button click
-  const witnessCards = document.querySelectorAll(".witness-card");
-  const totalCards = witnessCards.length;
-  const nextButton = document.querySelector("#nextWitnessBtn");
-  let currentIndex = 0;
-
-  if (witnessCards.length > 0 && nextButton) {
-    function showWitnessCard(index) {
-      const isDesktop = window.innerWidth >= 1220;
-      const isTablet = window.innerWidth >= 768;
-
-      witnessCards.forEach((card) => {
-        card.classList.remove("active", "active-tablet", "active-desktop");
-      });
-
-      if (isDesktop) {
-        // En desktop, mostrar 4 cards
-        for (let i = 0; i < 4; i++) {
-          if (witnessCards[index + i] && index + i < totalCards) {
-            witnessCards[index + i].classList.add("active-desktop");
-          }
-        }
-      } else if (isTablet) {
-        // En tablet, mostrar 2 cards
-        if (witnessCards[index]) {
-          witnessCards[index].classList.add("active-tablet");
-        }
-        if (witnessCards[index + 1] && index + 1 < totalCards) {
-          witnessCards[index + 1].classList.add("active-tablet");
-        }
-      } else {
-        // En móvil, mostrar 1 card
-        if (witnessCards[index]) {
-          witnessCards[index].classList.add("active");
-        }
-      }
-    }
-
-    nextButton.addEventListener("click", () => {
-      const isDesktop = window.innerWidth >= 1220;
-      const isTablet = window.innerWidth >= 768;
-
-      let step;
-      if (isDesktop) {
-        step = 4;
-      } else if (isTablet) {
-        step = 2;
-      } else {
-        step = 1;
-      }
-
-      currentIndex = (currentIndex + step) % totalCards;
-      showWitnessCard(currentIndex);
-    });
-
-    // Inicializar la vista
-    showWitnessCard(currentIndex);
-
-    // Reajustar cuando cambie el tamaño de pantalla
-    window.addEventListener("resize", () => {
-      showWitnessCard(currentIndex);
-    });
-  }
-
-  // Random Font Generator
-  const inputElement = document.getElementById("userInput");
-  const outputElement = document.getElementById("outputWord");
-  const buttonElement = document.getElementById("randomFontBtn");
-
-  if (inputElement && outputElement && buttonElement) {
-    const fontClasses = [
-      "font-1",
-      "font-2",
-      "font-3",
-      "font-4",
-      "font-5",
-      "font-6",
-      "font-7",
-      "font-8",
-      "font-9",
-      "font-10",
-      "font-11",
-      "font-12",
-      "font-13",
-      "font-14",
-      "font-15",
-      "font-16",
-      "font-17",
-      "font-18",
-      "font-19",
-      "font-20",
-    ];
-
-    function getRandomFontClass() {
-      const randomIndex = Math.floor(Math.random() * fontClasses.length);
-      return fontClasses[randomIndex];
-    }
-
-    buttonElement.addEventListener("click", () => {
-      const userWord = inputElement.value.trim();
-
-      if (userWord) {
-        outputElement.textContent = userWord;
-      } else {
-        outputElement.textContent = "Type your logo name";
-      }
-
-      outputElement.classList.remove(...fontClasses);
-      const newFontClass = getRandomFontClass();
-      outputElement.classList.add(newFontClass);
-    });
-  }
-
-  // Advice Section
-  const adviceItems = document.querySelectorAll(".advice-item");
-  const nextAdviceButton = document.getElementById("nextAdviceBtn");
-
-  if (adviceItems.length > 0 && nextAdviceButton) {
-    let currentAdviceIndex = 0;
-
-    function showAdvice(index) {
-      adviceItems.forEach((item) => {
-        item.classList.remove("active");
-      });
-
-      if (adviceItems[index]) {
-        adviceItems[index].classList.add("active");
-      }
-    }
-
-    nextAdviceButton.addEventListener("click", () => {
-      currentAdviceIndex = (currentAdviceIndex + 1) % adviceItems.length;
-      showAdvice(currentAdviceIndex);
-    });
-
-    // Mostrar el primer consejo al cargar la página
-    showAdvice(currentAdviceIndex);
-  }
-
-  // Particle Effect Initialization
-  const targetElement = document.getElementById("target-element");
-  const particleContainer = document.getElementById("particle-container");
-
-  // 1. Función para crear una sola carita feliz
-  function createParticle(x, y) {
-    const particle = document.createElement("span");
-    particle.classList.add("particle");
-
-    // Generar valores aleatorios para la animación
-    const randomX = (Math.random() - 0.5) * 60; // -30px a +30px
-    particle.style.setProperty("--random-x", `${randomX}px`);
-
-    // Contenido: emojis aleatorios
-    const emojis = ["✝︎"];
-    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-    particle.textContent = randomEmoji;
-
-    // Posición inicial usando coordenadas globales
-    particle.style.left = `${x - 12}px`;
-    particle.style.top = `${y - 12}px`;
-
-    particleContainer.appendChild(particle);
-
-    // Eliminar la partícula después de que termine la animación
-    setTimeout(() => {
-      if (particle.parentNode) {
-        particle.remove();
-      }
-    }, 1000);
-  }
-
-  // Variable para throttling
-  let lastParticleTime = 0;
-  const particleDelay = 100; // milisegundos entre creación de partículas
-
-  // 2. Función para manejar el hover
-  function handleHover(event) {
-    // Throttling para reducir la frecuencia de partículas
-    const now = Date.now();
-    if (now - lastParticleTime < particleDelay) {
-      return;
-    }
-    lastParticleTime = now;
-
-    // Usar coordenadas globales directamente
-    const x = event.clientX;
-    const y = event.clientY;
-
-    // Genera menos partículas (solo 1 por evento)
-    const offsetX = (Math.random() - 0.5) * 20;
-    const offsetY = (Math.random() - 0.5) * 20;
-
-    createParticle(x + offsetX, y + offsetY);
-  }
-
-  // 3. Añadir el escuchador de eventos
-  if (targetElement && particleContainer) {
-    console.log("✅ Elementos de partículas encontrados, iniciando animación");
-    targetElement.addEventListener("mousemove", handleHover);
-
-    // También agregar evento para móvil
-    targetElement.addEventListener("touchmove", function (event) {
-      event.preventDefault();
-      const touch = event.touches[0];
-      const fakeEvent = {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-      };
-      handleHover(fakeEvent);
-    });
-  } else {
-    console.error("❌ Elementos de partículas no encontrados:", {
-      targetElement: !!targetElement,
-      particleContainer: !!particleContainer,
-    });
-  }
-
-  // Animación Textos - Scroll Triggered
+  //Animación Textos Banners - Scroll Triggered
   function animateTexts() {
     document.fonts.ready.then(() => {
       // Animar titulo banner
@@ -485,68 +332,235 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   animateTexts();
 
-  // Añadir filter a imagenes
-  const imageFilters = document.querySelectorAll(".image-filter");
-  if (imageFilters.length > 0) {
-    imageFilters.forEach((imageFilter) => {
-      imageFilter.addEventListener("mouseenter", () => {
-        // Obtener el ID del filtro asignado a esta imagen
-        const filterId = imageFilter.getAttribute("data-filter");
-        if (filterId) {
-          const turbulence = document.querySelector(`#${filterId} .turbulence`);
-          if (turbulence) {
-            gsap.to(turbulence, {
-              attr: { baseFrequency: "0.01 0.08" },
-              duration: 0.3,
-              ease: "power2.out",
-            });
-          }
-        }
-      });
+  //LOGOS GRID SECTION
+  //Particle Effect Initialization
+  const targetElement = document.getElementById("target-element");
+  const particleContainer = document.getElementById("particle-container");
 
-      imageFilter.addEventListener("mouseleave", () => {
-        // Obtener el ID del filtro asignado a esta imagen
-        const filterId = imageFilter.getAttribute("data-filter");
-        if (filterId) {
-          const turbulence = document.querySelector(`#${filterId} .turbulence`);
-          if (turbulence) {
-            gsap.to(turbulence, {
-              attr: { baseFrequency: "0 0" },
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          }
-        }
-      });
-    });
-  } else {
-    console.error("❌ Image filter elements not found");
+  //1. Función para crear una sola partícula
+  function createParticle(x, y) {
+    const particle = document.createElement("span");
+    particle.classList.add("particle");
+
+    // Generar valores aleatorios para la animación
+    const randomX = (Math.random() - 0.5) * 60; // -30px a +30px
+    particle.style.setProperty("--random-x", `${randomX}px`);
+
+    // Contenido: emojis aleatorios
+    const emojis = ["✝︎"];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    particle.textContent = randomEmoji;
+
+    // Posición inicial usando coordenadas globales
+    particle.style.left = `${x - 12}px`;
+    particle.style.top = `${y - 12}px`;
+
+    particleContainer.appendChild(particle);
+
+    // Eliminar la partícula después de que termine la animación
+    setTimeout(() => {
+      if (particle.parentNode) {
+        particle.remove();
+      }
+    }, 1000);
   }
 
-  //Subtle animation for img wrapper elements on the Y axis when scrolled into view
-  const imgAnimation = document.querySelectorAll(
-    ".logo img, .image-wrapper, .witness-image-wrapper"
-  );
+  //Variable para throttling
+  let lastParticleTime = 0;
+  const particleDelay = 100;
 
-  imgAnimation.forEach((img) => {
-    gsap.fromTo(
-      img,
-      { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: img,
-          start: "top 90%",
-          end: "top 70%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
+  //2. Función para manejar el hover
+  function handleHover(event) {
+    // Throttling para reducir la frecuencia de partículas
+    const now = Date.now();
+    if (now - lastParticleTime < particleDelay) {
+      return;
+    }
+    lastParticleTime = now;
+
+    // Usar coordenadas globales directamente
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // Genera menos partículas (solo 1 por evento)
+    const offsetX = (Math.random() - 0.5) * 20;
+    const offsetY = (Math.random() - 0.5) * 20;
+
+    createParticle(x + offsetX, y + offsetY);
+  }
+
+  //3. Añadir el escuchador de eventos
+  if (targetElement && particleContainer) {
+    targetElement.addEventListener("mousemove", handleHover);
+
+    // También agregar evento para móvil
+    targetElement.addEventListener("touchmove", function (event) {
+      event.preventDefault();
+      const touch = event.touches[0];
+      const fakeEvent = {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      };
+      handleHover(fakeEvent);
+    });
+  }
+
+  //REASONS LOGOS DIED SECTION
+  //Toggle Reasons Section
+  const triggers = document.querySelectorAll(".toggle-trigger");
+  const contents = document.querySelectorAll(".toggle-content");
+
+  // Loop through each button trigger
+  triggers.forEach((trigger, index) => {
+    trigger.addEventListener("click", () => {
+      // Toggle the corresponding content based on the index
+      contents[index].classList.toggle("content-hidden");
+    });
   });
 
+  //WITNESS SECTION
+  //Enseñar tarjetas con botón
+  const witnessCards = document.querySelectorAll(".witness-card");
+  const totalCards = witnessCards.length;
+  const nextButton = document.querySelector("#nextWitnessBtn");
+  let currentIndex = 0;
+
+  if (witnessCards.length > 0 && nextButton) {
+    function showWitnessCard(index) {
+      const isDesktop = window.innerWidth >= 1220;
+      const isTablet = window.innerWidth >= 768;
+
+      witnessCards.forEach((card) => {
+        card.classList.remove("active", "active-tablet", "active-desktop");
+      });
+
+      if (isDesktop) {
+        // En desktop, mostrar 4 cards
+        for (let i = 0; i < 4; i++) {
+          if (witnessCards[index + i] && index + i < totalCards) {
+            witnessCards[index + i].classList.add("active-desktop");
+          }
+        }
+      } else if (isTablet) {
+        // En tablet, mostrar 2 cards
+        if (witnessCards[index]) {
+          witnessCards[index].classList.add("active-tablet");
+        }
+        if (witnessCards[index + 1] && index + 1 < totalCards) {
+          witnessCards[index + 1].classList.add("active-tablet");
+        }
+      } else {
+        // En móvil, mostrar 1 card
+        if (witnessCards[index]) {
+          witnessCards[index].classList.add("active");
+        }
+      }
+    }
+
+    nextButton.addEventListener("click", () => {
+      const isDesktop = window.innerWidth >= 1220;
+      const isTablet = window.innerWidth >= 768;
+
+      let step;
+      if (isDesktop) {
+        step = 4;
+      } else if (isTablet) {
+        step = 2;
+      } else {
+        step = 1;
+      }
+
+      currentIndex = (currentIndex + step) % totalCards;
+      showWitnessCard(currentIndex);
+    });
+
+    // Inicializar la vista
+    showWitnessCard(currentIndex);
+
+    // Reajustar cuando cambie el tamaño de pantalla
+    window.addEventListener("resize", () => {
+      showWitnessCard(currentIndex);
+    });
+  }
+
+  //THE KILLER SECTION
+  //Generador de Logo con fuentes aleatorias
+  const inputElement = document.getElementById("userInput");
+  const outputElement = document.getElementById("outputWord");
+  const buttonElement = document.getElementById("randomFontBtn");
+
+  if (inputElement && outputElement && buttonElement) {
+    const fontClasses = [
+      "font-1",
+      "font-2",
+      "font-3",
+      "font-4",
+      "font-5",
+      "font-6",
+      "font-7",
+      "font-8",
+      "font-9",
+      "font-10",
+      "font-11",
+      "font-12",
+      "font-13",
+      "font-14",
+      "font-15",
+      "font-16",
+      "font-17",
+      "font-18",
+      "font-19",
+      "font-20",
+    ];
+
+    function getRandomFontClass() {
+      const randomIndex = Math.floor(Math.random() * fontClasses.length);
+      return fontClasses[randomIndex];
+    }
+
+    buttonElement.addEventListener("click", () => {
+      const userWord = inputElement.value.trim();
+
+      if (userWord) {
+        outputElement.textContent = userWord;
+      } else {
+        outputElement.textContent = "Type your logo name";
+      }
+
+      outputElement.classList.remove(...fontClasses);
+      const newFontClass = getRandomFontClass();
+      outputElement.classList.add(newFontClass);
+    });
+  }
+
+  //CONCLUSION SECTION
+  //Adive Generator
+  const adviceItems = document.querySelectorAll(".advice-item");
+  const nextAdviceButton = document.getElementById("nextAdviceBtn");
+
+  if (adviceItems.length > 0 && nextAdviceButton) {
+    let currentAdviceIndex = 0;
+
+    function showAdvice(index) {
+      adviceItems.forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      if (adviceItems[index]) {
+        adviceItems[index].classList.add("active");
+      }
+    }
+
+    nextAdviceButton.addEventListener("click", () => {
+      currentAdviceIndex = (currentAdviceIndex + 1) % adviceItems.length;
+      showAdvice(currentAdviceIndex);
+    });
+
+    // Mostrar el primer consejo al cargar la página
+    showAdvice(currentAdviceIndex);
+  }
+
+  //THE SUCCESOR SECTION
   //Diagram circles animation
   function animateDiagramCircles() {
     const circle3 = document.getElementById("circle-3");
@@ -582,35 +596,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   animateDiagramCircles();
 
-  // Toggle Credits Section
-  const toggleText = document.getElementById("toggleText");
-  const contentDiv = document.getElementById("hiddenContent");
-
-  toggleText.addEventListener("click", () => {
-    contentDiv.classList.toggle("is-hidden");
-    contentDiv.classList.toggle("credits-info-visible");
-  });
-
-  // Toggle Reasons Section
-  const triggers = document.querySelectorAll(".toggle-trigger");
-  const contents = document.querySelectorAll(".toggle-content");
-
-  // Loop through each button trigger
-  triggers.forEach((trigger, index) => {
-    trigger.addEventListener("click", () => {
-      // Toggle the corresponding content based on the index
-      contents[index].classList.toggle("content-hidden");
-    });
-  });
-
-  // diagram description wrappers
+  //Diagram description wrappers
   const hoverSpans = document.querySelectorAll(".hover-span");
   const descriptionWrappers = document.querySelectorAll(
     ".diagram-description-wrapper"
   );
-
-  console.log("Hover spans encontrados:", hoverSpans.length);
-  console.log("Description wrappers encontrados:", descriptionWrappers.length);
 
   if (hoverSpans.length > 0 && descriptionWrappers.length > 0) {
     hoverSpans.forEach((span, index) => {
@@ -621,15 +611,11 @@ document.addEventListener("DOMContentLoaded", () => {
           ".diagram-description-item"
         );
 
-        console.log(`Configurando hover para círculo ${index + 1}`);
-
         // Configurar estado inicial
         gsap.set(descriptionItem, { opacity: 0, scale: 0.9 });
 
         // Eventos de hover
         span.addEventListener("mouseenter", () => {
-          console.log(`Hover en círculo ${index + 1}`);
-
           // Ocultar todos los wrappers primero
           descriptionWrappers.forEach((w) => w.classList.remove("active"));
 
@@ -646,8 +632,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         span.addEventListener("mouseleave", () => {
-          console.log(`Mouseleave en círculo ${index + 1}`);
-
           // Animar el item a oculto
           gsap.to(descriptionItem, {
             opacity: 0,
@@ -664,18 +648,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Copy URL Button
+  //CONCLUSION SECTION
+  //Toggle Credits Section
+  const toggleText = document.getElementById("toggleText");
+  const contentDiv = document.getElementById("hiddenContent");
+
+  toggleText.addEventListener("click", () => {
+    contentDiv.classList.toggle("is-hidden");
+    contentDiv.classList.toggle("credits-info-visible");
+  });
+
+  //FOOTER
+  //Copy URL Button
   const copyUrlButton = document.querySelector(".copy-url");
   if (copyUrlButton) {
     copyUrlButton.addEventListener("click", () => {
       const currentUrl = window.location.href;
       navigator.clipboard.writeText(currentUrl);
-      // .then(() => {
-      //   alert("URL copied to clipboard! Now spread the news.");
-      // })
-      // .catch((err) => {
-      //   console.error("Failed to copy URL: ", err);
-      // });
     });
 
     // change button text to "Copied!" on click

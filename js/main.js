@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Escuchar eventos de scroll y touch
     window.addEventListener("scroll", onFirstScroll, { passive: true });
     window.addEventListener("touchstart", onFirstScroll, { passive: true });
+    window.addEventListener("wheel", onFirstScroll, { passive: true });
   }
 
   //Animación Textos Banners - Scroll Triggered

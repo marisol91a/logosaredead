@@ -281,7 +281,7 @@ body {
 }
 
 .hero-title {
-    font-size: 68px;
+    font-size: 22vw;
     letter-spacing: -0.2rem;
     text-align: center;
     color: red;
@@ -706,7 +706,6 @@ input[type=text] {
 }
 
 .diagram-info-wrapper {
-    /* position: absolute; */
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -714,13 +713,10 @@ input[type=text] {
     inset: 0%;
     z-index: 2;
     mix-blend-mode: difference;
-
-    /* display: none; */
 }
 
 .diagram-item {
     position: absolute;
-    height: 33%;
     display: flex;
     flex-direction: column;
     padding: 24px;
@@ -735,7 +731,7 @@ input[type=text] {
 .diagram-info{
     display: flex;
     flex-direction: column;
-    row-gap: 60px;
+    row-gap: 36px;
 }
 
 #circle-1 {
@@ -779,7 +775,7 @@ input[type=text] {
 }
 
 .second-circle {
-    top: 28%;
+    top: 20%;
 
     .diagram-title {
         font-size: 1.5rem;
@@ -787,7 +783,7 @@ input[type=text] {
 }
 
 .third-circle {
-    top: 62%;
+    top: 50%;
 
     .diagram-title {
         font-size: 2rem;

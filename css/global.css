@@ -106,7 +106,6 @@ body {
 }
 
 .image-filter[data-filter="noise-1"] {
-    width: 100%;
     filter: url(#noise-1);
     transform: scale(1.1);
 }

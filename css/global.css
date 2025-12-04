@@ -97,6 +97,7 @@ body {
 /*IMAGE FILTERS*/
 .distort {
     position: absolute;
+    z-index: -1;
 }
 
 .overlay-image {
